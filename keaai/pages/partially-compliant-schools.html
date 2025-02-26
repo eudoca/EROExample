@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partially Compliant Schools - Education Review Office</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Raleway Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        :root {
+            --primary-color: #33767E;
+            --secondary-color: #02BBB2;
+            --dark-bg: #1E1E1E;
+            --text-light: #FFFFFF;
+            --text-muted: #A0A0A0;
+        }
+        
+        body {
+            background-color: #FFFFFF;
+            font-family: 'Raleway', sans-serif;
+            color: #333;
+        }
+        
+        .sidebar {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            padding: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            margin: 4px 0;
+            border-radius: 0;
+            transition: all 0.2s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .sidebar .nav-link:hover, 
+        .sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        
+        .search-container {
+            max-width: 800px;
+            margin: 40px auto 40px;
+            text-align: center;
+        }
+        
+        .search-input {
+            border-radius: 12px;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-search {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+        }
+        
+        .btn-search:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .logo-container {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .new-thread-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 20px 20px;
+            transition: all 0.2s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .new-thread-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .notification-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 8px;
+            float: right;
+        }
+        
+        .attachment-btn {
+            background: none;
+            border: none;
+            color: #6c757d;
+            font-size: 1.2rem;
+            padding: 0.375rem 0.75rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .attachment-btn:hover {
+            color: var(--secondary-color);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .table {
+            font-size: 0.875rem;
+        }
+        
+        .status-badge {
+            padding: 0.4rem 0.65rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .status-partial {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .table-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filters-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+        
+        .search-filter {
+            max-width: 300px;
+        }
+        
+        .compliance-progress {
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 0;
+            }
+            
+            .sidebar .nav-link span {
+                display: none;
+            }
+            
+            .sidebar .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .logo-container img {
+                max-width: 40px;
+            }
+            
+            .new-thread-btn span {
+                display: none;
+            }
+            
+            .filters-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .search-filter {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <img src="../components/images/ERO%20logo.png" alt="Education Review Office Logo">
+        </div>
+        <button class="new-thread-btn w-100 mb-4">
+            <i class="bi bi-plus-lg me-2"></i>
+            <span>New Analysis</span>
+        </button>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="../index2.html">
+                    <i class="bi bi-house-door"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="school-analysis-overview.html">
+                    <i class="bi bi-grid-3x3-gap"></i>
+                    <span>School Overview</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="napier-alignment-analysis.html">
+                    <i class="bi bi-bar-chart"></i>
+                    <span>Alignment Analysis</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="query-analysis.html">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span>Query Analysis</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="search-container">
+            <h3 class="mb-4">Partially Compliant Schools</h3>
+            <div class="notification-badge">
+                <i class="bi bi-arrow-up-circle-fill me-1"></i> 8 schools improved compliance this month
+            </div>
+            <div class="input-group mb-5">
+                <input type="text" class="form-control search-input" placeholder="Search for partially compliant schools...">
+                <button class="attachment-btn" type="button">
+                    <i class="bi bi-paperclip"></i>
+                </button>
+                <button class="btn btn-search" type="button">
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- New Summary Overview Section -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <h5 class="card-title mb-3">Compliance Overview</h5>
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <div class="d-flex align-items-center p-2 rounded" style="background-color: rgba(25, 135, 84, 0.1);">
+                                    <div class="rounded-circle p-2 me-2" style="background-color: rgba(25, 135, 84, 0.2);">
+                                        <i class="bi bi-check-circle-fill fs-5" style="color: #198754;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 text-muted small">Almost Compliant</h6>
+                                        <h4 class="mb-0 fw-bold">7</h4>
+                                        <small class="text-success" style="font-size: 0.75rem;">75%+ compliant</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex align-items-center p-2 rounded" style="background-color: rgba(255, 193, 7, 0.1);">
+                                    <div class="rounded-circle p-2 me-2" style="background-color: rgba(255, 193, 7, 0.2);">
+                                        <i class="bi bi-hourglass-split fs-5" style="color: #ffc107;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 text-muted small">Somewhat Compliant</h6>
+                                        <h4 class="mb-0 fw-bold">8</h4>
+                                        <small class="text-warning" style="font-size: 0.75rem;">50-74% compliant</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex align-items-center p-2 rounded" style="background-color: rgba(13, 110, 253, 0.1);">
+                                    <div class="rounded-circle p-2 me-2" style="background-color: rgba(13, 110, 253, 0.2);">
+                                        <i class="bi bi-arrow-repeat fs-5" style="color: #0d6efd;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 text-muted small">Minimal Compliance</h6>
+                                        <h4 class="mb-0 fw-bold">3</h4>
+                                        <small class="text-primary" style="font-size: 0.75rem;">25-49% compliant</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="d-flex align-items-center p-2 rounded" style="background-color: rgba(220, 53, 69, 0.1);">
+                                    <div class="rounded-circle p-2 me-2" style="background-color: rgba(220, 53, 69, 0.2);">
+                                        <i class="bi bi-exclamation-circle-fill fs-5" style="color: #dc3545;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 text-muted small">Non-Compliant</h6>
+                                        <h4 class="mb-0 fw-bold">0</h4>
+                                        <small class="text-danger" style="font-size: 0.75rem;">Under 25% compliant</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="alert alert-info py-2 px-3 mb-0">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    <strong>Note:</strong> 44% of partially compliant schools are expected to achieve full compliance within the next 3 months.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <div class="section-header">
+                <h4>Partially Compliant Schools</h4>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary me-2">
+                        <i class="bi bi-download me-1"></i> Export
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-envelope me-1"></i> Send Guidance
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filters-container">
+                <div class="search-filter">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search schools...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <select class="form-select">
+                        <option selected>All Regions</option>
+                        <option>Auckland</option>
+                        <option>Wellington</option>
+                        <option>Canterbury</option>
+                        <option>Hawke's Bay</option>
+                        <option>Otago</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>School Name</th>
+                            <th>Region</th>
+                            <th>Type</th>
+                            <th>Submission Date</th>
+                            <th>Compliance</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Havelock North High School</td>
+                            <td>Hawke's Bay</td>
+                            <td>Secondary</td>
+                            <td>20 Jan 2025</td>
+                            <td>
+                                <div>65%</div>
+                                <div class="progress compliance-progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-partial">Partial</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">Review</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Flaxmere College</td>
+                            <td>Hawke's Bay</td>
+                            <td>Secondary</td>
+                            <td>18 Jan 2025</td>
+                            <td>
+                                <div>70%</div>
+                                <div class="progress compliance-progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-partial">Partial</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">Review</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Epsom Girls Grammar</td>
+                            <td>Auckland</td>
+                            <td>Secondary</td>
+                            <td>15 Jan 2025</td>
+                            <td>
+                                <div>75%</div>
+                                <div class="progress compliance-progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-partial">Partial</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">Review</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Karori Normal School</td>
+                            <td>Wellington</td>
+                            <td>Primary</td>
+                            <td>12 Jan 2025</td>
+                            <td>
+                                <div>60%</div>
+                                <div class="progress compliance-progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-partial">Partial</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">Review</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Burnside High School</td>
+                            <td>Canterbury</td>
+                            <td>Secondary</td>
+                            <td>10 Jan 2025</td>
+                            <td>
+                                <div>80%</div>
+                                <div class="progress compliance-progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-partial">Partial</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">Review</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Otago Boys High School</td>
+                            <td>Otago</td>
+                            <td>Secondary</td>
+                            <td>8 Jan 2025</td>
+                            <td>
+                                <div>55%</div>
+                                <div class="progress compliance-progress">
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </td>
+                            <td><span class="status-badge status-partial">Partial</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">Review</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+</body>
+</html> 

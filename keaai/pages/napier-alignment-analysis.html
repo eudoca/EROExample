@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alignment Analysis - Education Review Office</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Raleway Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        :root {
+            --primary-color: #33767E;
+            --secondary-color: #02BBB2;
+            --dark-bg: #1E1E1E;
+            --text-light: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+        
+        body {
+            background-color: #FFFFFF;
+            font-family: 'Raleway', sans-serif;
+            color: #333;
+        }
+        
+        .sidebar {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            padding: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            margin: 4px 0;
+            border-radius: 0;
+            transition: all 0.2s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .sidebar .nav-link:hover, 
+        .sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        
+        .search-container {
+            max-width: 800px;
+            margin: 40px auto 40px;
+            text-align: center;
+        }
+        
+        .search-input {
+            border-radius: 12px;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-search {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+        }
+        
+        .btn-search:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .notification-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 8px;
+            float: right;
+        }
+        
+        .attachment-btn {
+            background: none;
+            border: none;
+            color: #6c757d;
+            font-size: 1.2rem;
+            padding: 0.375rem 0.75rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .attachment-btn:hover {
+            color: var(--secondary-color);
+        }
+        
+        .logo-container {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .new-thread-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 20px 20px;
+            transition: all 0.2s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .new-thread-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .progress {
+            height: 0.75rem;
+            border-radius: 0.5rem;
+            background-color: #e9ecef;
+        }
+        
+        .progress-bar-high {
+            background-color: var(--success-color);
+        }
+        
+        .progress-bar-medium {
+            background-color: var(--warning-color);
+        }
+        
+        .progress-bar-low {
+            background-color: var(--danger-color);
+        }
+        
+        .badge-alignment {
+            padding: 0.4rem 0.65rem;
+            font-weight: 500;
+            border-radius: 0.25rem;
+            font-size: 0.85rem;
+        }
+        
+        .badge-high {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .badge-medium {
+            background-color: var(--warning-color);
+            color: #212529;
+        }
+        
+        .badge-low {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .domain-card {
+            border-radius: 12px;
+            border: 1px solid #eee;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .domain-card-header {
+            padding: 12px 20px;
+            border-bottom: 1px solid #eee;
+            background-color: #f8f9fa;
+            border-radius: 12px 12px 0 0;
+        }
+        
+        .domain-card-body {
+            padding: 16px 20px;
+        }
+        
+        .subdomain-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s;
+        }
+        
+        .subdomain-item:last-child {
+            border-bottom: none;
+        }
+        
+        .subdomain-item:hover {
+            background-color: rgba(2, 187, 178, 0.05);
+        }
+        
+        .summary-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-score {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .attribute-item {
+            margin-bottom: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 0;
+            }
+            
+            .sidebar .nav-link span {
+                display: none;
+            }
+            
+            .sidebar .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .logo-container img {
+                max-width: 40px;
+            }
+            
+            .new-thread-btn span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <img src="../components/images/ERO%20logo.png" alt="Education Review Office Logo">
+        </div>
+        <button class="new-thread-btn w-100 mb-4">
+            <i class="bi bi-plus-lg me-2"></i>
+            <span>New Analysis</span>
+        </button>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="../index2.html">
+                    <i class="bi bi-house-door"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="school-analysis-overview.html">
+                    <i class="bi bi-grid-3x3-gap"></i>
+                    <span>School Overview</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="napier-alignment-analysis.html">
+                    <i class="bi bi-bar-chart"></i>
+                    <span>Alignment Analysis</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="query-analysis.html">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span>Query Analysis</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="search-container">
+            <h3 class="mb-4">Alignment Analysis</h3>
+            <div class="notification-badge">
+                <i class="bi bi-bell-fill me-1"></i> 5 new school action plans submitted
+            </div>
+            <div class="input-group mb-5">
+                <input type="text" class="form-control search-input" placeholder="Search for schools or action plans..." value="Napier Boys">
+                <button class="attachment-btn" type="button">
+                    <i class="bi bi-paperclip"></i>
+                </button>
+                <button class="btn btn-search" type="button">
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>Napier Boys High School</h2>
+                <p class="text-muted">Alignment Analysis Report</p>
+            </div>
+            <div>
+                <button class="btn btn-outline-secondary me-2">
+                    <i class="bi bi-download me-1"></i> Export
+                </button>
+                <button class="btn btn-outline-secondary">
+                    <i class="bi bi-share me-1"></i> Share
+                </button>
+            </div>
+        </div>
+        
+        <!-- Overall Summary -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="summary-card">
+                    <h4>Overall Alignment Score</h4>
+                    <div class="d-flex align-items-center">
+                        <div class="summary-score me-3">82%</div>
+                        <span class="badge badge-high">High Alignment</span>
+                    </div>
+                    <p class="mt-3">Napier Boys High School Action Plan demonstrates strong alignment with ERO's framework, with particular strengths in leadership and curriculum domains.</p>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="summary-card">
+                    <h4 class="mb-3">Domain Alignment Scores</h4>
+                    <div class="attribute-item">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Learner Success and Wellbeing</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-high" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-item">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Leadership</span>
+                            <span>88%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-high" role="progressbar" style="width: 88%" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-item">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Curriculum</span>
+                            <span>84%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-high" role="progressbar" style="width: 84%" aria-valuenow="84" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-item">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Teaching and Learning</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-high" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-item">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Conditions for Success</span>
+                            <span>78%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-high" role="progressbar" style="width: 78%" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-item">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Te Tiriti o Waitangi</span>
+                            <span>72%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-medium" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="attribute-item mb-0">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span>Evaluation for Improvement</span>
+                            <span>76%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-high" role="progressbar" style="width: 76%" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Learner Success and Wellbeing -->
+        <div class="domain-card">
+            <div class="domain-card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">1. Learner Success and Wellbeing</h4>
+                <span class="badge badge-high">85% Aligned</span>
+            </div>
+            <div class="domain-card-body">
+                <p>The Napier Boys High School Action Plan demonstrates strong commitment to learner success and wellbeing across multiple dimensions. The plan outlines comprehensive strategies to support academic achievement while nurturing students' social-emotional development.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Academic success</span>
+                                <span class="badge badge-high">90%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Strong academic programs with clear pathways and support systems. Consistently high achievement in national assessments.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Sense of belonging, identity, language, and culture</span>
+                                <span class="badge badge-medium">75%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Good cultural programs but opportunities exist to strengthen cultural responsiveness and inclusion practices.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Social-emotional awareness</span>
+                                <span class="badge badge-high">85%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Comprehensive wellbeing program with dedicated counseling services and peer support networks.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Creative and critical thinking</span>
+                                <span class="badge badge-high">88%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Strong emphasis on inquiry-based learning and problem-solving across the curriculum.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Self-awareness and regulation</span>
+                                <span class="badge badge-high">82%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Effective programs for developing student self-management and emotional regulation skills.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Respect, citizenship, and a love of learning</span>
+                                <span class="badge badge-high">87%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Strong school values program and community service initiatives that promote citizenship.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Grit and adaptive problem-solving</span>
+                                <span class="badge badge-high">85%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Effective programs that challenge students and develop resilience through academic and co-curricular activities.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Core Domains: Leadership -->
+        <div class="domain-card">
+            <div class="domain-card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">2.1 Leadership</h4>
+                <span class="badge badge-high">88% Aligned</span>
+            </div>
+            <div class="domain-card-body">
+                <p>The leadership section of the Napier Boys High School Action Plan demonstrates a clear vision for school improvement and establishes effective systems to support teaching and learning excellence.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Improvement Goals</span>
+                                <span class="badge badge-high">92%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Clear, measurable improvement goals aligned with strategic priorities and student needs.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Culture of Quality Teaching</span>
+                                <span class="badge badge-high">90%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Strong professional learning community with regular collaboration and peer observation.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Evidence-Based Planning for Improvement</span>
+                                <span class="badge badge-high">85%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Systematic use of data to inform decision-making and improvement initiatives.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>High-Quality, Evidence-Informed Teaching</span>
+                                <span class="badge badge-high">86%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Strong professional development program focused on evidence-based teaching practices.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Networks and Relationships to Support Transitions</span>
+                                <span class="badge badge-high">85%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Effective partnerships with contributing schools and tertiary institutions to support student transitions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Core Domains: Curriculum -->
+        <div class="domain-card">
+            <div class="domain-card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">2.2 Curriculum</h4>
+                <span class="badge badge-high">84% Aligned</span>
+            </div>
+            <div class="domain-card-body">
+                <p>The curriculum section of the Napier Boys High School Action Plan outlines a coherent and responsive approach that reflects local contexts and stakeholder aspirations while providing clear pathways for student success.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Coherent and Responsive Curriculum</span>
+                                <span class="badge badge-high">88%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Well-structured curriculum with clear learning progressions and pathways for all students.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Stakeholder Aspirations in the Curriculum</span>
+                                <span class="badge badge-high">82%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Regular consultation with community and incorporation of feedback into curriculum design.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Reflection of Local Contexts</span>
+                                <span class="badge badge-high">85%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Strong integration of local history, environment, and community contexts in learning programs.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>School-Wide Assessments</span>
+                                <span class="badge badge-high">86%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Comprehensive assessment framework that balances formative and summative approaches.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Integrated Te Ao Māori Learning Opportunities</span>
+                                <span class="badge badge-medium">74%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Some integration of Te Ao Māori perspectives, but opportunities exist to strengthen this area.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Te Tiriti o Waitangi -->
+        <div class="domain-card">
+            <div class="domain-card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">4. Te Tiriti o Waitangi</h4>
+                <span class="badge badge-medium">72% Aligned</span>
+            </div>
+            <div class="domain-card-body">
+                <p>While the Napier Boys High School Action Plan has made progress in integrating Te Tiriti principles, this remains an area for continued development and focus.</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Integration of Māori Perspectives</span>
+                                <span class="badge badge-medium">70%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Some integration of Māori perspectives in curriculum and leadership, with opportunities for growth.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Equitable Outcomes for Māori Learners</span>
+                                <span class="badge badge-medium">75%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Progress in improving outcomes for Māori students, but achievement gaps still exist in some areas.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="subdomain-item">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Partnerships with Mana Whenua</span>
+                                <span class="badge badge-medium">72%</span>
+                            </div>
+                            <p class="small text-muted mb-0">Developing relationships with local iwi, with plans to strengthen these partnerships.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning mt-3" role="alert">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="bi bi-lightbulb-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading">Improvement Opportunity</h6>
+                            <p class="mb-0">Develop a comprehensive strategy to strengthen Te Tiriti o Waitangi integration across all aspects of school operations, with specific focus on culturally responsive pedagogy and partnerships with mana whenua.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recommendations -->
+        <div class="domain-card">
+            <div class="domain-card-header">
+                <h4 class="mb-0">Key Recommendations for Action Plan Improvement</h4>
+            </div>
+            <div class="domain-card-body">
+                <ol>
+                    <li class="mb-3">
+                        <strong>Strengthen Te Ao Māori integration</strong> - Develop a comprehensive plan to integrate Te Ao Māori perspectives across all curriculum areas and school practices in the next iteration of the Action Plan.
+                    </li>
+                    <li class="mb-3">
+                        <strong>Enhance culturally responsive pedagogy</strong> - Include more specific professional development initiatives in the Action Plan to strengthen teachers' culturally responsive teaching practices.
+                    </li>
+                    <li class="mb-3">
+                        <strong>Deepen partnerships with mana whenua</strong> - Outline formal partnership agreements with local iwi in the Action Plan to support authentic engagement and collaboration.
+                    </li>
+                    <li class="mb-3">
+                        <strong>Strengthen evaluation practices</strong> - Include more robust systems in the Action Plan for evaluating the impact of improvement initiatives on student outcomes.
+                    </li>
+                    <li>
+                        <strong>Enhance student agency</strong> - Add specific strategies to the Action Plan for increasing student voice and leadership in curriculum design and school improvement processes.
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+</body>
+</html> 

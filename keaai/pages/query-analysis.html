@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Query Analysis - Education Review Office</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Raleway Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        :root {
+            --primary-color: #33767E;
+            --secondary-color: #02BBB2;
+            --dark-bg: #1E1E1E;
+            --text-light: #FFFFFF;
+            --text-muted: #A0A0A0;
+        }
+        
+        body {
+            background-color: #FFFFFF;
+            font-family: 'Raleway', sans-serif;
+            color: #333;
+        }
+        
+        .sidebar {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            padding: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            margin: 4px 0;
+            border-radius: 0;
+            transition: all 0.2s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .sidebar .nav-link:hover, 
+        .sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        
+        .search-container {
+            max-width: 800px;
+            margin: 40px auto 40px;
+            text-align: center;
+        }
+        
+        .search-input {
+            border-radius: 12px;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .search-input:focus {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-search {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+        }
+        
+        .btn-search:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        .logo-container {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+        }
+        
+        .logo-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .new-thread-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 15px;
+            margin: 0 20px 20px;
+            transition: all 0.2s;
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .new-thread-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .notification-badge {
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 8px;
+            float: right;
+        }
+        
+        .attachment-btn {
+            background: none;
+            border: none;
+            color: #6c757d;
+            font-size: 1.2rem;
+            padding: 0.375rem 0.75rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .attachment-btn:hover {
+            color: var(--secondary-color);
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Raleway', sans-serif;
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border: none;
+        }
+        
+        .card-header {
+            background-color: rgba(51, 118, 126, 0.05);
+            border-bottom: 1px solid rgba(51, 118, 126, 0.1);
+            padding: 15px 20px;
+        }
+        
+        .query-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .response-container {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .action-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+            transition: all 0.2s;
+        }
+        
+        .action-item:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .action-item .badge {
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            margin-right: 5px;
+        }
+        
+        .editor-toolbar {
+            background-color: #f8f9fa;
+            border-radius: 8px 8px 0 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-bottom: none;
+        }
+        
+        .editor-content {
+            border: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+            padding: 15px;
+            min-height: 200px;
+        }
+        
+        .btn-toolbar {
+            margin-right: 5px;
+        }
+        
+        .school-selector {
+            max-width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .history-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            transition: all 0.2s;
+        }
+        
+        .history-item:hover {
+            background-color: rgba(2, 187, 178, 0.05);
+        }
+        
+        .history-item .timestamp {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 20px 0;
+            }
+            
+            .sidebar .nav-link span {
+                display: none;
+            }
+            
+            .sidebar .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .logo-container img {
+                max-width: 40px;
+            }
+            
+            .new-thread-btn span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <img src="../components/images/ERO%20logo.png" alt="Education Review Office Logo">
+        </div>
+        <button class="new-thread-btn w-100 mb-4">
+            <i class="bi bi-plus-lg me-2"></i>
+            <span>New Analysis</span>
+        </button>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="../index2.html">
+                    <i class="bi bi-house-door"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="school-analysis-overview.html">
+                    <i class="bi bi-grid-3x3-gap"></i>
+                    <span>School Overview</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="napier-alignment-analysis.html">
+                    <i class="bi bi-bar-chart"></i>
+                    <span>Alignment Analysis</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="query-analysis.html">
+                    <i class="bi bi-chat-left-text"></i>
+                    <span>Query Analysis</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="search-container">
+            <h3 class="mb-4">Query Analysis</h3>
+            <div class="notification-badge">
+                <i class="bi bi-lightning-fill me-1"></i> AI-powered analysis available
+            </div>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control search-input" placeholder="Ask anything about school performance or action plans...">
+                <button class="attachment-btn" type="button">
+                    <i class="bi bi-paperclip"></i>
+                </button>
+                <button class="btn btn-search" type="button">
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Summary Overview Section -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-3">
+                        <h5 class="card-title mb-3">Query Assistant</h5>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center p-2 rounded" style="background-color: rgba(2, 187, 178, 0.1);">
+                                    <div class="rounded-circle p-2 me-2" style="background-color: rgba(2, 187, 178, 0.2);">
+                                        <i class="bi bi-chat-dots fs-5" style="color: var(--secondary-color);"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 text-muted small">Total Queries</h6>
+                                        <h4 class="mb-0 fw-bold">24</h4>
+                                        <small class="text-muted" style="font-size: 0.75rem;">This month</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center p-2 rounded" style="background-color: rgba(13, 110, 253, 0.1);">
+                                    <div class="rounded-circle p-2 me-2" style="background-color: rgba(13, 110, 253, 0.2);">
+                                        <i class="bi bi-file-earmark-text fs-5" style="color: #0d6efd;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 text-muted small">Reports Generated</h6>
+                                        <h4 class="mb-0 fw-bold">12</h4>
+                                        <small class="text-primary" style="font-size: 0.75rem;">Ready for distribution</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="d-flex align-items-center p-2 rounded" style="background-color: rgba(25, 135, 84, 0.1);">
+                                    <div class="rounded-circle p-2 me-2" style="background-color: rgba(25, 135, 84, 0.2);">
+                                        <i class="bi bi-check-circle fs-5" style="color: #198754;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 text-muted small">Completed Actions</h6>
+                                        <h4 class="mb-0 fw-bold">18</h4>
+                                        <small class="text-success" style="font-size: 0.75rem;">Action items resolved</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Query Interface -->
+        <div class="row">
+            <!-- Left Column - Query Interface -->
+            <div class="col-md-8">
+                <div class="query-container">
+                    <h4 class="mb-4">School Analysis Query</h4>
+                    
+                    <!-- School Selector -->
+                    <div class="school-selector mb-4">
+                        <label for="schoolSelect" class="form-label">Select School</label>
+                        <select class="form-select" id="schoolSelect">
+                            <option selected>Choose a school...</option>
+                            <option value="1">Napier Boys High School</option>
+                            <option value="2">Havelock North High School</option>
+                            <option value="3">Taradale Primary School</option>
+                            <option value="4">Auckland Grammar School</option>
+                            <option value="5">Wellington College</option>
+                            <option value="6">Christchurch Boys High School</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Query Input -->
+                    <div class="mb-4">
+                        <label for="queryInput" class="form-label">Your Query</label>
+                        <textarea class="form-control" id="queryInput" rows="3" placeholder="Ask a specific question about this school's performance, action plan, or compliance..."></textarea>
+                    </div>
+                    
+                    <!-- Query Options -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="" id="includeActionPlans" checked>
+                                <label class="form-check-label" for="includeActionPlans">
+                                    Include action plan data
+                                </label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="" id="includePerformance" checked>
+                                <label class="form-check-label" for="includePerformance">
+                                    Include performance metrics
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" value="" id="includeRecommendations" checked>
+                                <label class="form-check-label" for="includeRecommendations">
+                                    Generate recommendations
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="includeNextSteps" checked>
+                                <label class="form-check-label" for="includeNextSteps">
+                                    Include next steps
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="submitQuery">
+                        <i class="bi bi-lightning me-2"></i>Generate Analysis
+                    </button>
+                    
+                    <!-- Response Area (initially hidden, shown after query) -->
+                    <div class="response-container mt-4">
+                        <h5 class="mb-3">Analysis Results</h5>
+                        <div class="response-text mb-4">
+                            <p><strong>School:</strong> Napier Boys High School</p>
+                            <p>Based on the available data, Napier Boys High School has not yet submitted their action plan for the current review cycle. The school was previously rated as having high alignment with educational standards in the 2023 review, but the absence of a current action plan raises concerns about ongoing compliance.</p>
+                            <p>Performance metrics from the last assessment show strengths in academic achievement and student engagement, but areas for improvement in cultural responsiveness and community partnerships.</p>
+                        </div>
+                        
+                        <h5 class="mb-3">Recommended Actions</h5>
+                        <div class="action-items">
+                            <div class="action-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">Contact School Leadership</h6>
+                                    <span class="badge bg-danger">High Priority</span>
+                                </div>
+                                <p class="mb-2">Schedule a meeting with the principal and board chair to discuss the overdue action plan submission.</p>
+                                <button class="btn btn-sm btn-outline-primary">Add to Tasks</button>
+                            </div>
+                            
+                            <div class="action-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">Provide Template Assistance</h6>
+                                    <span class="badge bg-warning text-dark">Medium Priority</span>
+                                </div>
+                                <p class="mb-2">Share updated action plan templates and examples of high-quality submissions from similar schools.</p>
+                                <button class="btn btn-sm btn-outline-primary">Add to Tasks</button>
+                            </div>
+                            
+                            <div class="action-item">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <h6 class="mb-0">Follow-up Review</h6>
+                                    <span class="badge bg-info">Scheduled</span>
+                                </div>
+                                <p class="mb-2">Schedule a follow-up review within 30 days to assess progress on action plan development.</p>
+                                <button class="btn btn-sm btn-outline-primary">Add to Tasks</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content Editor for Redistribution -->
+                    <div class="editor-section mt-4">
+                        <h5 class="mb-3">Edit Content for School</h5>
+                        <div class="editor-toolbar">
+                            <button class="btn btn-sm btn-toolbar"><i class="bi bi-type-bold"></i></button>
+                            <button class="btn btn-sm btn-toolbar"><i class="bi bi-type-italic"></i></button>
+                            <button class="btn btn-sm btn-toolbar"><i class="bi bi-type-underline"></i></button>
+                            <button class="btn btn-sm btn-toolbar"><i class="bi bi-list-ul"></i></button>
+                            <button class="btn btn-sm btn-toolbar"><i class="bi bi-list-ol"></i></button>
+                            <button class="btn btn-sm btn-toolbar"><i class="bi bi-link"></i></button>
+                        </div>
+                        <div class="editor-content">
+                            <p>Dear Napier Boys High School Leadership,</p>
+                            <p>We are writing to follow up on your school's action plan submission for the current review cycle. Our records indicate that your action plan is currently overdue.</p>
+                            <p>Based on your school's previous high alignment rating, we would like to offer assistance to ensure continued compliance and support for your educational objectives.</p>
+                            <p>Please contact our office at your earliest convenience to discuss next steps and any support you may need in completing your action plan.</p>
+                            <p>Regards,<br>Education Review Office</p>
+                        </div>
+                        <div class="d-flex justify-content-end mt-3">
+                            <button class="btn btn-outline-secondary me-2">Save Draft</button>
+                            <button class="btn btn-primary">Send to School</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column - History and Templates -->
+            <div class="col-md-4">
+                <!-- Recent Queries -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Recent Queries</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="history-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Wellington College</strong>
+                                <span class="timestamp">Today, 10:23 AM</span>
+                            </div>
+                            <p class="mb-0 text-truncate">Action plan implementation progress...</p>
+                        </div>
+                        <div class="history-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Auckland Grammar School</strong>
+                                <span class="timestamp">Yesterday, 2:45 PM</span>
+                            </div>
+                            <p class="mb-0 text-truncate">Cultural responsiveness assessment...</p>
+                        </div>
+                        <div class="history-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Havelock North High School</strong>
+                                <span class="timestamp">Feb 24, 11:30 AM</span>
+                            </div>
+                            <p class="mb-0 text-truncate">Compliance improvement strategies...</p>
+                        </div>
+                        <div class="history-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Taradale Primary School</strong>
+                                <span class="timestamp">Feb 22, 9:15 AM</span>
+                            </div>
+                            <p class="mb-0 text-truncate">Missing action plan follow-up...</p>
+                        </div>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="#" class="text-decoration-none">View All History</a>
+                    </div>
+                </div>
+                
+                <!-- Templates -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Communication Templates</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group">
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Action Plan Reminder</span>
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Compliance Notice</span>
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Positive Feedback</span>
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span>Review Scheduling</span>
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                            </a>
+                        </div>
+                        <button class="btn btn-outline-primary w-100 mt-3">
+                            <i class="bi bi-plus-lg me-2"></i>Create New Template
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="../js/main.js"></script>
+    
+    <script>
+        // Demo functionality for the query interface
+        document.addEventListener('DOMContentLoaded', function() {
+            const submitButton = document.getElementById('submitQuery');
+            const responseContainer = document.querySelector('.response-container');
+            const editorSection = document.querySelector('.editor-section');
+            
+            // Initially hide the response and editor sections
+            responseContainer.style.display = 'none';
+            editorSection.style.display = 'none';
+            
+            // Show them when the submit button is clicked
+            submitButton.addEventListener('click', function() {
+                // Simulate loading
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...';
+                
+                // Simulate API delay
+                setTimeout(function() {
+                    responseContainer.style.display = 'block';
+                    editorSection.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.innerHTML = '<i class="bi bi-lightning me-2"></i>Generate Analysis';
+                    
+                    // Scroll to the response
+                    responseContainer.scrollIntoView({ behavior: 'smooth' });
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html> 
